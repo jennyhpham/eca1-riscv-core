@@ -1,0 +1,17 @@
+{
+    "name": "eca1-prj",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "mshr-h.veriloghdl",
+                "wavetrace.wavetrace",
+                "ms-python.python",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
+}

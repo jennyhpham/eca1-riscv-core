@@ -1,0 +1,28 @@
+# Build artifacts
+convolution_testbench
+*.o
+*.out.bak
+
+# Simulation outputs
+test_result.out
+wave.vcd
+*.vcd
+*.fst
+*.wlf
+
+# Yosys work dir
+.yosys_check/
+
+# Deliverables (built by scripts/package.sh, attached to Canvas instead)
+deliverables/
+
+# VS Code
+.vscode/ipch/
+*.code-workspace
+
+# Other
+package.sh
+
+# Generated / excluded
+test/program.hex
+Project_Documentation.pdf
