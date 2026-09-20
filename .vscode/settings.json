@@ -9,5 +9,6 @@
         "*.v": "verilog"
     },
     "editor.formatOnSave": false,
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "systemverilogFormatter.veribleBuild": "linux-static-x86_64"
 }
