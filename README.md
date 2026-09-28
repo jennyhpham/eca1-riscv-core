@@ -52,7 +52,7 @@ diff test_result.out test/output/test0.out
 
 - `main` — optimized core 
 - `baseline` — unoptimized pipelined core.
-- `features/*` - for example features/program-counter, features/alu, or features/pipeline-registers before being merged into main through a pull request.
+- `feature/*` - for example features/program-counter, features/alu, or features/pipeline-registers before being merged into main through a pull request.
 
 
 ## Test generation
