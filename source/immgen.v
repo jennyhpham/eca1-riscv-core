@@ -2,7 +2,7 @@
 
 module immgen (
     input  wire [31:0] instr,
-    input  wire [ 1:0] imm_sel,  // get from control unit
+    input  wire [ 1:0] imm_sel,  // get from the decoder (control unit)
     output reg  [31:0] imm
 );
 
