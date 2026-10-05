@@ -18,7 +18,7 @@ always @(*) begin
         3'b001: alu_result = A * B;
         3'b010: alu_result = A << B[4:0];
         3'b011: alu_result = ($signed(A) < $signed(B)) ? 1:0;
-        3'b100: alu_result = ($signed(A) > $signed(B)) ? 1:0;
+        3'b100: alu_result = ($signed(A) >= $signed(B)) ? 1:0;
         3'b101: alu_result = (A == B) ? 1:0;
         3'b110: alu_result = (A != B) ? 1:0;
         default: alu_result = 32'b0;

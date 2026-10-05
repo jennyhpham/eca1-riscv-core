@@ -193,7 +193,7 @@ initial begin
 end
 
 initial begin
-  $dumpfile("wave.vcd");
+  $dumpfile("test/unit/alu_tb.vcd");
   $dumpvars(0, alu_tb);
 end
 
