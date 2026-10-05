@@ -1,13 +1,13 @@
 `timescale 1ps / 1ps
 module ifid_tb;
-    reg clk = 0, rst = 0, en = 1, flush = 0;
+    reg clk = 0, rst = 0, stall = 0, flush = 0;
     reg  [31:0] pc_in, pc_plus4_in, instr_in;
     wire [31:0] pc_out, pc_plus4_out, instr_out;
 
     integer errors = 0;
 
     if_id dut (
-        .clk(clk), .rst(rst), .en(en), .flush(flush),
+        .clk(clk), .rst(rst), .stall(stall), .flush(flush),
         .pc_in(pc_in), .pc_plus4_in(pc_plus4_in), .instr_in(instr_in),
         .pc_out(pc_out), .pc_plus4_out(pc_plus4_out), .instr_out(instr_out)
     );
@@ -39,10 +39,10 @@ module ifid_tb;
         check(pc_plus4_out, 32'h0000000c, "capture: pc_plus4_out");
         check(instr_out, 32'h2a400593, "capture: instr_out");
 
-        // 2. stall: en=0, inputs change, outputs hold
+        // 2. stall: stall=1, inputs change, outputs hold
         pc_in = 32'h0000000c; pc_plus4_in = 32'h00000010;
         instr_in = 32'h008e2b03;
-        en = 0;
+        stall = 1;
         @(negedge clk);
         #1
         check(pc_out, 32'h00000008, "stall: pc_out held");
@@ -50,7 +50,7 @@ module ifid_tb;
         check(instr_out, 32'h2a400593, "stall: instr_out held");
 
         // 3. flush -> bubble (opcode 0 = illegal -> decoder deasserts all)
-        en = 1; flush = 1;
+        stall = 0; flush = 1;
         pc_in = 32'h00000010; pc_plus4_in = 32'h00000014;
         instr_in = 32'h005ac663;
         @(negedge clk);
@@ -75,3 +75,5 @@ module ifid_tb;
         $finish;
     end
 endmodule
+
+

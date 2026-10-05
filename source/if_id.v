@@ -3,7 +3,7 @@
 module if_id (
     input wire clk,
     rst,
-    en,
+    stall,
     flush,
 
     input wire [31:0] pc_in,
@@ -20,7 +20,7 @@ module if_id (
       pc_out       <= 0;
       pc_plus4_out <= 0;
       instr_out    <= 0;
-    end else if (en) begin
+    end else if (!stall) begin
       pc_out       <= pc_in;
       pc_plus4_out <= pc_plus4_in;
       instr_out    <= instr_in;
@@ -28,3 +28,4 @@ module if_id (
   end
 
 endmodule
+

@@ -3,7 +3,7 @@
 module id_ex (
     input wire clk,
     rst,
-    en,
+    stall,
     flush,
 
     // Data
@@ -79,7 +79,7 @@ module id_ex (
       is_jalr_out      <= 0;
 
       wb_sel_out       <= 0;
-    end else if (en) begin
+    end else if (!stall) begin
         pc_out           <= pc_in;
         pc_plus4_out     <= pc_plus4_in;
         rs1_data_out    <= rs1_data_in;
@@ -107,3 +107,4 @@ module id_ex (
 
 
 endmodule
+

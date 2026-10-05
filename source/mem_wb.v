@@ -3,7 +3,7 @@
 module mem_wb (
     input wire clk,
     rst,
-    en,
+    stall,
     flush,
 
     // Data
@@ -35,7 +35,7 @@ module mem_wb (
       reg_write_out  <= 0;
       wb_sel_out     <= 0;
 
-    end else if (en) begin
+    end else if (!stall) begin
       alu_result_out <= alu_result_in;
       mem_data_out   <= mem_data_in;
       pc_plus4_out   <= pc_plus4_in;
@@ -47,3 +47,4 @@ module mem_wb (
   end
 
 endmodule
+

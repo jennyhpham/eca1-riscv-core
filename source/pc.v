@@ -3,7 +3,7 @@
 module pc (
     input wire clk,
     rst,
-    en,
+    stall,
     branch_en,
     input wire [31:0] pc_target,
     output reg [31:0] pc,
@@ -17,9 +17,11 @@ module pc (
       pc <= 0;
     end else if (branch_en) begin
       pc <= pc_target;
-    end else if (en) begin
+    end else if (!stall) begin
       pc <= pc + 32'd4;
     end
-    // en == 0: hold (stall)
+    // stall == 1: hold
   end
 endmodule
+
+

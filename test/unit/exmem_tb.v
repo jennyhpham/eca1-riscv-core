@@ -1,6 +1,6 @@
 `timescale 1ps / 1ps
 module exmem_tb;
-    reg clk = 0, rst = 0, en = 1, flush = 0;
+    reg clk = 0, rst = 0, stall = 0, flush = 0;
 
     reg  [31:0] alu_result_in, store_data_in, pc_plus4_in;
     reg  [4:0]  rd_in;
@@ -15,7 +15,7 @@ module exmem_tb;
     integer errors = 0;
 
     ex_mem dut (
-        .clk(clk), .rst(rst), .en(en), .flush(flush),
+        .clk(clk), .rst(rst), .stall(stall), .flush(flush),
         .alu_result_in(alu_result_in), .store_data_in(store_data_in),
         .pc_plus4_in(pc_plus4_in),
         .rd_in(rd_in),
@@ -83,7 +83,7 @@ module exmem_tb;
 
         // 2. stall
         drive_b();
-        en = 0;
+        stall = 1;
         @(negedge clk);
         #1;
         check(alu_result_out, 32'h00000a34, "stall: alu_result_out held");
@@ -93,7 +93,7 @@ module exmem_tb;
 
         // 3. flush -> bubble
         drive_b();
-        en = 1; flush = 1;
+        stall = 0; flush = 1;
         @(negedge clk);
         #1;
         check(reg_write_out, 32'd0, "flush: reg_write_out zeroed");
@@ -119,3 +119,5 @@ module exmem_tb;
         $finish;
     end
 endmodule
+
+

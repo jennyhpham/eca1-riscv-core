@@ -1,6 +1,6 @@
 `timescale 1ps / 1ps
 module idex_tb;
-    reg clk = 0, rst = 0, en = 1, flush = 0;
+    reg clk = 0, rst = 0, stall = 0, flush = 0;
 
     reg  [31:0] pc_in, pc_plus4_in, rs1_data_in, rs2_data_in, imm_in;
     reg  [4:0]  rs1_in, rs2_in, rd_in;
@@ -21,7 +21,7 @@ module idex_tb;
     integer errors = 0;
 
     id_ex dut (
-        .clk(clk), .rst(rst), .en(en), .flush(flush),
+        .clk(clk), .rst(rst), .stall(stall), .flush(flush),
         .pc_in(pc_in),
         .pc_plus4_in(pc_plus4_in),
         .rs1_data_in(rs1_data_in), .rs2_data_in(rs2_data_in), .imm_in(imm_in),
@@ -107,9 +107,9 @@ module idex_tb;
         check({29'b0, branch_op_out}, 32'h5, "capture: branch_op_out");
         check({30'b0, wb_sel_out}, 32'h2, "capture: wb_sel_out");
 
-        // 2. stall: en=0, change inputs, outputs must hold pattern A
+        // 2. stall: stall=1, change inputs, outputs must hold pattern A
         drive_b();
-        en = 0;
+        stall = 1;
         @(negedge clk);
         #1;
         check(rs1_data_out, 32'h11111111, "stall: rs1_data_out held (input was B)");
@@ -118,9 +118,9 @@ module idex_tb;
         check({28'b0, alu_op_out}, 32'h5, "stall: alu_op_out held");
         check({30'b0, wb_sel_out}, 32'h2, "stall: wb_sel_out held");
 
-        // 3. flush: en=1, flush=1, outputs must zero (bubble)
+        // 3. flush: stall=0, flush=1, outputs must zero (bubble)
         drive_b();
-        en = 1; flush = 1;
+        stall = 0; flush = 1;
         @(negedge clk);
         #1;
         check(reg_write_out, 32'd0, "flush: reg_write_out zeroed");
@@ -131,7 +131,7 @@ module idex_tb;
         check(rs1_data_out, 32'd0, "flush: rs1_data_out zeroed");
         check({30'b0, wb_sel_out}, 32'd0, "flush: wb_sel_out zeroed");
 
-        // 4. re-enable: flush=0, en=1, pattern B captured
+        // 4. re-enable: flush=0, stall=0, pattern B captured
         drive_b();
         flush = 0;
         @(negedge clk);
@@ -148,3 +148,5 @@ module idex_tb;
         $finish;
     end
 endmodule
+
+

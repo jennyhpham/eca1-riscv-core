@@ -2,7 +2,7 @@
 module ex_mem (
     input wire clk,
     rst,
-    en,
+    stall,
     flush,
 
     // Data
@@ -39,7 +39,7 @@ module ex_mem (
       mem_read_out   <= 0;
       mem_write_out  <= 0;
       wb_sel_out     <= 0;
-    end else if (en) begin
+    end else if (!stall) begin
       alu_result_out <= alu_result_in;
       store_data_out <= store_data_in;
       pc_plus4_out   <= pc_plus4_in;
@@ -52,3 +52,4 @@ module ex_mem (
   end
 
 endmodule
+

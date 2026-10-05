@@ -1,6 +1,6 @@
 `timescale 1ps / 1ps
 module memwb_tb;
-    reg clk = 0, rst = 0, en = 1, flush = 0;
+    reg clk = 0, rst = 0, stall = 0, flush = 0;
 
     reg  [31:0] alu_result_in, mem_data_in, pc_plus4_in;
     reg  [4:0]  rd_in;
@@ -15,7 +15,7 @@ module memwb_tb;
     integer errors = 0;
 
     mem_wb dut (
-        .clk(clk), .rst(rst), .en(en), .flush(flush),
+        .clk(clk), .rst(rst), .stall(stall), .flush(flush),
         .alu_result_in(alu_result_in), .mem_data_in(mem_data_in),
         .pc_plus4_in(pc_plus4_in), .rd_in(rd_in),
         .reg_write_in(reg_write_in), .wb_sel_in(wb_sel_in),
@@ -78,7 +78,7 @@ module memwb_tb;
 
         // 2. stall: hold pattern A
         drive_b();
-        en = 0;
+        stall = 1;
         @(negedge clk);
         #1
         check(alu_result_out, 32'h11111111, "stall: alu_result_out held");
@@ -88,7 +88,7 @@ module memwb_tb;
 
         // 3. flush: bubble (reg_write dead -> no regfile write)
         drive_b();
-        en = 1; flush = 1;
+        stall = 0; flush = 1;
         @(negedge clk);
         #1
         check(alu_result_out, 32'd0, "flush: alu_result_out zeroed");
@@ -112,3 +112,5 @@ module memwb_tb;
         $finish;
     end
 endmodule
+
+
