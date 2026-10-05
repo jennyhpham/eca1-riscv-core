@@ -15,17 +15,17 @@ module regfile #(
     output wire [(DATA_WIDTH - 1):0] rdata2
 );
 
-// Initialize the register file with 32 registers of 32 bits each
-reg [31:0] registers [0:31];
-integer i;
+  // Initialize the register file with 32 registers of 32 bits each
+  reg [31:0] registers[0:31];
+  integer i;
 
-// On the rising edge of the clock:
-always @(posedge clk) begin
+  // On the rising edge of the clock:
+  always @(posedge clk) begin
     if (rst) begin
-        // Reset all registers to 0
-        for (i = 0; i < 32; i = i + 1) begin
-            registers[i] <= 32'b0;
-        end
+      // Reset all registers to 0
+      for (i = 0; i < 32; i = i + 1) begin
+        registers[i] <= 32'b0;
+      end
     end else if (write_enable && waddr != 5'd0) begin
       // Write only if address is not zero and signal is enabled
       registers[waddr] <= wdata;
