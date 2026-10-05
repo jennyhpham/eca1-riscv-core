@@ -1,7 +1,10 @@
 `timescale 1ps / 1ps
 
-module if_id(
-    input wire clk, rst,en, flush,
+module if_id (
+    input wire clk,
+    rst,
+    en,
+    flush,
 
     input wire [31:0] pc_in,
     input wire [31:0] inst_in,
@@ -19,5 +22,5 @@ module if_id(
       inst_out <= inst_in;
     end
   end
-   
+
 endmodule

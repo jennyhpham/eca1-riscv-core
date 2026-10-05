@@ -1,7 +1,10 @@
-`timescale 1ps/1ps
+`timescale 1ps / 1ps
 
 module pc (
-    input wire clk, rst, en, branch_en,
+    input wire clk,
+    rst,
+    en,
+    branch_en,
     input wire [31:0] pc_target,
     output reg [31:0] pc
 );
