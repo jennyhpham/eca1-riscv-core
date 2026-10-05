@@ -6,8 +6,11 @@ module pc (
     en,
     branch_en,
     input wire [31:0] pc_target,
-    output reg [31:0] pc
+    output reg [31:0] pc,
+    output wire [31:0] pc_plus4
 );
+
+  assign pc_plus4 = pc + 32'd4;
 
   always @(posedge clk) begin
     if (rst) begin

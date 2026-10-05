@@ -8,6 +8,7 @@ module id_ex (
 
     // Data
     input wire [31:0] pc_in,  //needed for branch/jal
+    input wire [31:0] pc_plus4_in,
     input wire [31:0] rs1_data_in,
     rs2_data_in,
     imm_in,
@@ -31,6 +32,7 @@ module id_ex (
 
     // OUTPUT
     output reg [31:0] pc_out,
+    output reg [31:0] pc_plus4_out,
     output reg [31:0] rs1_data_out,
     rs2_data_out,
     imm_out,
@@ -55,8 +57,9 @@ module id_ex (
 
   always @(posedge clk) begin
     if (rst || flush) begin
-      pc_out           <= 0;
-      rs1_data_out     <= 0;
+        pc_out           <= 0;
+        pc_plus4_out     <= 0;
+        rs1_data_out     <= 0;
       rs2_data_out     <= 0;
       imm_out          <= 0;
 
@@ -77,8 +80,9 @@ module id_ex (
 
       wb_sel_out       <= 0;
     end else if (en) begin
-      pc_out           <= pc_in;
-      rs1_data_out     <= rs1_data_in;
+        pc_out           <= pc_in;
+        pc_plus4_out     <= pc_plus4_in;
+        rs1_data_out    <= rs1_data_in;
       rs2_data_out     <= rs2_data_in;
       imm_out          <= imm_in;
 
