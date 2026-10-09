@@ -48,11 +48,31 @@ diff test_result.out test/output/test0.out
   for a quick check (~1 min) 
 - Expected results with the incomplete core: `20/20 tests failed`, all `TIMEOUT`.
 
-## Branch strategy
+## Performance metrics (baseline vs. optimized)
 
+`test/testbench_metrics.v` is a copy of `test/testbench.v` with additional code for measuring required metrics. 
+To measure:
+
+```bash
+./scripts/measure_metrics.sh  # 1 test (metrics are identical across tests);
+# pass a number for more, e.g.  ./scripts/measure_metrics.sh 20
+```
+
+Each run prints `METRICS test=N cycles=C retired=R mem_reads=MR mem_writes=MW`
+per test, plus a per-test table with CPI (= cycles ÷ retired).
+
+Definitions:
+- **cycles** — clock cycles from reset release to `core_finish`
+- **retired** — instructions that completed.
+  Instructions killed by a mispredict flush (bubbles) are **not** counted.
+- **CPI** — cycles ÷ retired (1.0 = ideal single-issue). Higher means that stalls/flushes are present.
+- **mem_reads / mem_writes** — lw/sw crossing the MEM stage. Motivates caching and unrolling optimisations.
+
+## Branch 
 - `main` — optimized core 
 - `baseline` — unoptimized pipelined core.
-- `feature/*` - for example features/program-counter, features/alu, or features/pipeline-registers before being merged into main through a pull request.
+- `optimisation-pipeline`- used for integrating optimisations from members
+- `feature/*` 
 
 
 ## Test generation

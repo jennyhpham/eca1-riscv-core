@@ -1,5 +1,6 @@
 # Build artifacts
 convolution_testbench
+test/metrics_sim
 *.o
 *.out.bak
 
