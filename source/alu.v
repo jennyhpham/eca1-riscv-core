@@ -14,7 +14,6 @@ module ALU #(
   always @(*) begin
 
     case (alu_control)
-    case (alu_control)
       3'b000:  alu_result = A + B;
       3'b001:  alu_result = A * B;
       3'b010:  alu_result = A << B[4:0];
@@ -23,7 +22,7 @@ module ALU #(
       3'b101:  alu_result = (A == B) ? 1 : 0;
       3'b110:  alu_result = (A != B) ? 1 : 0;
       default: alu_result = 32'b0;
-    endcase
+      default: alu_result = 32'b0;
     endcase
 
     neg_flag  = alu_result[31];
