@@ -16,48 +16,40 @@ for_i_loop:
 
 for_j_loop:
     addi    s3,     x0,     0       # acc = 0
-    addi    s4,     x0,     0       # ki = 0
 
-for_ki_loop:
-    addi    s5,     x0,     0       # kj = 0
-
-for_kj_loop:
-    # input element: row = i+ki, col = j+kj
-    add     t0,     s1,     s4
-    add     t1,     s2,     s5
-
-    # byte offset = (row*13 + col) * 4
+    # byte offset = (i*13 + j) * 4
     addi    t3,     x0,     13
-    mul     t2,     t0,     t3
-    add     t2,     t2,     t1
+    mul     t2,     s1,     t3
+    add     t2,     t2,     s2
     slli    t2,     t2,     2
 
-    # load input element
     add     t3,     a0,     t2
+
+    # store input element
     lw      s6,     0(t3)
-
-    # kernel byte offset = (ki*2 + kj) * 4
-    slli    t0,     s4,     1
-    add     t0,     t0,     s5
-    slli    t0,     t0,     2
-
-    # load kernel element
-    add     t1,     a1,     t0
-    lw      s7,     0(t1)
-
-    # acc += input * kernel
+    # store kernel element
+    lw      s7,     0(a1)
+    # MUL1: input[i][j] * kernel[0][0]
     mul     t0,     s6,     s7
-    add     s3,     s3,     t0
+    add     s3,     a3,     t0
 
-    # kj++; if kj < 2 goto for_kj_loop
-    addi    s5,     s5,     1
-    addi    t0,     x0,     2
-    blt     s5,     t0,     for_kj_loop
+    lw      s6,     4(t3)
+    lw      s7,     4(a1)
+    # MUL2: input[i+1][j] * kernel[0][1]
+    mul     t0,     s6,     s7
+    add     s3,     a3,     t0
 
-    # ki++; if ki < 2 goto for_ki_loop
-    addi    s4,     s4,     1
-    addi    t0,     x0,     2
-    blt     s4,     t0,     for_ki_loop
+    lw      s6,     52(t3)
+    lw      s7,     8(a1)
+    # MUL3: input[i][j+1] * kernel[1][0]
+    mul     t0,     s6,     s7
+    add     s3,     a3,     t0
+
+    lw      s6,     56(t3)
+    lw      s7,     12(a1)
+    # MUL4: input[i+1][j+1] * kernel[1][1]
+    mul     t0,     s6,     s7
+    add     s3,     a3,     t0
 
     # output byte offset = (i*11 + j) * 4
     addi    t0,     x0,     11
