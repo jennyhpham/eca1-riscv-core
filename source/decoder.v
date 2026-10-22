@@ -47,10 +47,10 @@ module decoder (
         reg_write = 1;
         ALUOp = 2'b10;
       end
-      7'b0010011: begin  // I-type (arithmetic)
+      7'b0010011: begin  // I-type (arithmetic): addi, slli
         reg_write = 1;
         ALUSrc = 1;
-        ALUOp = 2'b10;
+        ALUOp = 2'b11;  // dedicated code: bits[31:25] are IMM bits, not funct7
       end
       7'b0000011: begin  // Load (I-type)
         reg_write = 1;

@@ -28,11 +28,19 @@ module ALU_Control (
           default: alu_control = ADD;
         endcase
       end
-      2'b10: begin  // R type instructions
-        if (funct3 == 3'b000 && funct7 == 7'b0000000) alu_control = ADD;
+      2'b10: begin  // R type instructions: funct7 is a REAL funct7 field here
+        if      (funct3 == 3'b000 && funct7 == 7'b0000000) alu_control = ADD;
         else if (funct3 == 3'b000 && funct7 == 7'b0000001) alu_control = MUL;
         else if (funct3 == 3'b001 && funct7 == 7'b0000000) alu_control = SLL;
         else alu_control = ADD;
+      end
+      2'b11: begin  // I-type arithmetic (addi, slli): bits[31:25] are IMM bits,
+                    // NOT funct7 — decode by funct3 only, never look at funct7
+        case (funct3)
+          3'b000:  alu_control = ADD;  // addi
+          3'b001:  alu_control = SLL;  // slli
+          default: alu_control = ADD;
+        endcase
       end
       default: alu_control = ADD;
     endcase
