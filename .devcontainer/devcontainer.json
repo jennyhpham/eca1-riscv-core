@@ -8,6 +8,7 @@
             "extensions": [
                 "mshr-h.veriloghdl",
                 "wavetrace.wavetrace",
+                "bmpenuelas.systemverilog-formatter-vscode",
                 "ms-python.python",
                 "eamodio.gitlens"
             ]

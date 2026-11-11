@@ -1,5 +1,6 @@
 # Build artifacts
 convolution_testbench
+test/metrics_sim
 *.o
 *.out.bak
 
@@ -26,3 +27,6 @@ package.sh
 # Generated / excluded
 test/program.hex
 Project_Documentation.pdf
+
+# Unit tests
+test/unit/*_sim
